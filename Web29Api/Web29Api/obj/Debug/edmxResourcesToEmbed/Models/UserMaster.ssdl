@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="projectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Accommodations">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name_acc" Type="nvarchar(max)" />
+    <Property Name="des_acc" Type="text" />
+    <Property Name="thumbnail" Type="nvarchar(max)" />
+    <Property Name="price_acc" Type="smallmoney" />
+    <Property Name="discount_acc" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="quanity_acc" Type="tinyint" />
+    <Property Name="address_acc" Type="text" />
+    <Property Name="category" Type="nvarchar(max)" />
+    <Property Name="location" Type="nvarchar(max)" />
+    <Property Name="status" Type="bit" />
+    <Property Name="created" Type="datetime" />
+    <Property Name="updated" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Comment_Acc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="acc_id" Type="int" />
+    <Property Name="data" Type="text" />
+    <Property Name="created" Type="datetime" />
+    <Property Name="updated" Type="datetime" />
+    <Property Name="status" Type="bit" />
+  </EntityType>
+  <EntityType Name="Comment_Tour">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="tour_id" Type="int" />
+    <Property Name="data" Type="text" />
+    <Property Name="status" Type="bit" />
+    <Property Name="created" Type="datetime" />
+    <Property Name="updated" Type="datetime" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Tour">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name_tour" Type="text" />
+    <Property Name="description" Type="text" />
+    <Property Name="thumbnail" Type="nvarchar(max)" />
+    <Property Name="location" Type="nvarchar" MaxLength="50" />
+    <Property Name="price_tour" Type="smallmoney" />
+    <Property Name="total_time" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="category_tour" Type="nvarchar" MaxLength="50" />
+    <Property Name="status" Type="bit" />
+    <Property Name="created_time" Type="datetime" Nullable="false" />
+    <Property Name="update_time" Type="datetime" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fullname" Type="nvarchar(max)" />
+    <Property Name="username" Type="nvarchar(max)" />
+    <Property Name="password" Type="nvarchar(max)" />
+    <Property Name="created" Type="datetime" />
+    <Property Name="updated" Type="datetime" />
+    <Property Name="status" Type="bit" />
+    <Property Name="level_user" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <Association Name="FK_Comment_Acc_Accommodations">
+    <End Role="Accommodations" Type="Self.Accommodations" Multiplicity="0..1" />
+    <End Role="Comment_Acc" Type="Self.Comment_Acc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accommodations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Comment_Acc">
+        <PropertyRef Name="acc_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_Acc_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Comment_Acc" Type="Self.Comment_Acc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Comment_Acc">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_Tour_Tour">
+    <End Role="Tour" Type="Self.Tour" Multiplicity="0..1" />
+    <End Role="Comment_Tour" Type="Self.Comment_Tour" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tour">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Comment_Tour">
+        <PropertyRef Name="tour_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_Tour_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Comment_Tour" Type="Self.Comment_Tour" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Comment_Tour">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="projectModelStoreContainer">
+    <EntitySet Name="Accommodations" EntityType="Self.Accommodations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Comment_Acc" EntityType="Self.Comment_Acc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Comment_Tour" EntityType="Self.Comment_Tour" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tour" EntityType="Self.Tour" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Comment_Acc_Accommodations" Association="Self.FK_Comment_Acc_Accommodations">
+      <End Role="Accommodations" EntitySet="Accommodations" />
+      <End Role="Comment_Acc" EntitySet="Comment_Acc" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_Acc_User" Association="Self.FK_Comment_Acc_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Comment_Acc" EntitySet="Comment_Acc" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_Tour_Tour" Association="Self.FK_Comment_Tour_Tour">
+      <End Role="Tour" EntitySet="Tour" />
+      <End Role="Comment_Tour" EntitySet="Comment_Tour" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_Tour_User" Association="Self.FK_Comment_Tour_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Comment_Tour" EntitySet="Comment_Tour" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
